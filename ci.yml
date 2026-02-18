@@ -1,0 +1,40 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches: [ harshitha, main ]
+  pull_request:
+    branches: [ harshitha, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Display basic info
+        run: |
+          echo "Running CI on branch: ${{ github.ref }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Workflow started!"
+
+      - name: Validate project
+        run: |
+          echo "Checking for README.md..."
+          test -f README.md && echo "README exists!" || echo "No README found."
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/harshitha'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deployment step placeholder
+        run: |
+          echo "This is your deployment step."
+          echo "Add real deployment commands here."
+
